@@ -60,7 +60,7 @@ contract InitializeContract is Ownable {
         bytes32 _name,
         bytes32 _dob,
         bytes32 _nationality,
-        address _affiliation,uint16
+        address _affiliation,
         address _newOwner
     ) {
         // owner = msg.sender;

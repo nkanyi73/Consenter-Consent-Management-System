@@ -1,105 +1,121 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import LandingView from '../views/LandingView.vue'
-import LoginView from '../views/LoginView.vue'
-import SignupView from '../views/SignupView.vue'
-import DashboardView from '../views/DashboardView.vue'
-import ProfileView from '../views/ProfileView.vue'
-import CreateUser from '../views/CreateUser.vue'
-import NotificationView from '../views/NotificationView.vue'
-import SubjectResponse from '../views/SubjectResponse.vue'
-// import  firebase  from 'firebase/compat/app';
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
-// eslint-disable-next-line
-import { db } from '../firebase'
-// import LoaderView from '../components/LoaderView.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import LandingView from "../views/LandingView.vue";
+import LoginView from "../views/LoginView.vue";
+import SignupView from "../views/SignupView.vue";
+import DashboardView from "../views/DashboardView.vue";
+import ProfileView from "../views/ProfileView.vue";
+import CreateUser from "../views/CreateUser.vue";
+import NotificationView from "../views/NotificationView.vue";
+import SubjectResponse from "../views/SubjectResponse.vue";
+import ManageAccessView from "../views/ManageAccessView.vue";
+import ViewUsers from "../views/ViewUsers.vue";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: LandingView
+    path: "/",
+    name: "home",
+    component: LandingView,
   },
   {
-    path:'/notifications',
-    name: 'notifications',
-    component: NotificationView
+    path: "/notifications",
+    name: "notifications",
+    component: NotificationView,
+    meta: {
+      requiredAuthorization: true,
+      roles: ['1', '3'],
+    },
   },
   {
-    path: '/login',
-    name: 'login',
-    component: LoginView
+    path: "/login",
+    name: "login",
+    component: LoginView,
   },
   {
-    path: '/signup',
-    name: 'signup',
-    component: SignupView
+    path: "/signup",
+    name: "signup",
+    component: SignupView,
+    meta: {
+      requiredAuthorization: true,
+      roles: ['1']
+    }
   },
   {
-    path: '/myhome',
-    name: 'client_home',
-    component: SubjectResponse
+    path: "/myhome",
+    name: "client_home",
+    component: SubjectResponse,
+    meta: {
+      requiredAuthorization: true,
+      roles: ['2'],
+    },
   },
-   {
-    path: '/dashboard',
-    name: 'dashboard',
+  {
+    path: "/manageAccess",
+    name: "manage_access",
+    component: ManageAccessView,
+    meta: {
+      requiredAuthorization: true,
+      roles: ['2'],
+    },
+  },
+  {
+    path: "/manageUsers",
+    name: "manage_users",
+    component: ViewUsers,
+    meta: {
+      requiredAuthorization: true,
+      roles: ['1'],
+    },
+  },
+  {
+    path: "/dashboard",
+    name: "dashboard",
     component: DashboardView,
-      meta: {
-        authRequired: true
-      },
+    meta: {
+      requiredAuthorization: true,
+      roles: ['1'],
+    },
   },
   {
-    path: '/profile',
-    name: 'profile',
+    path: "/profile",
+    name: "profile",
     component: ProfileView,
-      meta: {
-        authRequired: true
-      },
+    meta: {
+      requiredAuthorization: true,
+      roles: ['2'],
+    },
   },
   {
-    path: '/new_user',
-    name: 'newUser',
+    path: "/new_user",
+    name: "newUser",
     component: CreateUser,
-      meta: {
-        authRequired: true
-      },
-  }
-]
+    meta: {
+      requiredAuthorization: true,
+      roles: ['1'],
+    },
+  },
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
-
-const getCurrentUser = () => {
-  return new Promise((resolve, reject) => {
-    const removeListener = onAuthStateChanged(
-      getAuth(),
-      (user) => {
-        removeListener();
-        resolve(user);
-      },
-      reject
-    );
-  });
-}
+  routes,
+});
 
 router.beforeEach(async (to, from, next) => {
-  if (to.matched.some(record => record.meta.authRequired)) {
-    if (await getCurrentUser()) {
+  const role = localStorage.role;
+  if (to.meta.requiredAuthorization) {
+    if (to.meta?.roles?.includes(role)) {
       next();
     } else {
-      alert('You must be logged in to see this page');
-      next({
-        path: '/login',
-      });
+      alert("You are not allowed to view this page");
+      router.back();
     }
   } else {
     next();
   }
 });
 
-export default router
+export default router;
