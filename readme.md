@@ -11,8 +11,7 @@ The system consists of three users: An institution (admin), a data subject, and 
 The admin then proceeds to create a third party and a new data subject, after which a contract is automatically deployed on behalf of the data subject. The contract is [InitialContract.sol](https://github.com/nkanyi73/Consenter-Consent-Management-System/blob/develop/contracts/InitializeContract.sol). [InitialContract.sol](https://github.com/nkanyi73/Consenter-Consent-Management-System/blob/develop/contracts/InitializeContract.sol) defines the elements that the data subject can store, with related information categorized using structs. This allows the data subject to control access to his/her information through categories. 
 
 The third party then logs in and is able to see the available data subjects, and can request for information. The new data subject then logs in and is able to edit his information, and review requests made for his/her data.
-
-[System Architecture](architecture.png)
+<img src="architecture.png" alt="System Architecture">
 ## Project setup
 To install all packages required for this project, you need yarn dependency manager. Use the links below to install, depending on your OS 
 
