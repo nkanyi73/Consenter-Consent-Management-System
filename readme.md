@@ -6,10 +6,13 @@ This project was undertaken as a final year project, that shows how Blockchain t
 - UserClient - A front-facing VueJS app that can be used by any party to interact with the system. 
 
 ## How it Works
-The system consists of three users: An institution (admin), a data subject, and a third party. The admin is responsible for registering all users (data subjects and third parties). It starts with the admin logging in (assuming the user already exists in the database). The admin then needs to deploy his own contract which will serve as the parent contract for all the data subjects in his institution. This contract is Transaction.sol in this project. 
+The system consists of three users: An institution (admin), a data subject, and a third party. The admin is responsible for registering all users (data subjects and third parties). It starts with the admin logging in (assuming the admin already exists in the database). The admin then needs to deploy his own contract which will serve as the parent contract for all the data subjects in his institution. This contract is [Transaction.sol](https://github.com/nkanyi73/Consenter-Consent-Management-System/blob/develop/contracts/Transaction.sol) in this project. 
 
-The admin then proceeds to create a third party and a new data subject, after which a contract is automatically deployed on behalf of the data subject. The contract is InitialContract.sol. The third party then logs in and is able to see the available data subjects, and can request for information. The new data subject then logs in and is able to edit his information, and review requests made for his/her data.
+The admin then proceeds to create a third party and a new data subject, after which a contract is automatically deployed on behalf of the data subject. The contract is [InitialContract.sol](https://github.com/nkanyi73/Consenter-Consent-Management-System/blob/develop/contracts/InitializeContract.sol). [InitialContract.sol](https://github.com/nkanyi73/Consenter-Consent-Management-System/blob/develop/contracts/InitializeContract.sol) defines the elements that the data subject can store, with related information categorized using structs. This allows the data subject to control access to his/her information through categories. 
 
+The third party then logs in and is able to see the available data subjects, and can request for information. The new data subject then logs in and is able to edit his information, and review requests made for his/her data.
+
+[System Architecture](architecture.png)
 ## Project setup
 To install all packages required for this project, you need yarn dependency manager. Use the links below to install, depending on your OS 
 
@@ -33,4 +36,11 @@ To start the development environment, run the command
 ```
 yarn serve
 ```
+## Database Manager
+This is an Express JS API that allows the application in this repository to communicate with a MySQL Database. You can find this repository [here](https://github.com/nkanyi73/Consenter-CMS-DB) with all set up instructions included.
+
+## Find a Bug?
+If you found an issue or would like to submit an improvement to this project, please submit an issue using the issues tab above. If you would like to submit a PR with a fix, reference the issue you created!
+
+
 
